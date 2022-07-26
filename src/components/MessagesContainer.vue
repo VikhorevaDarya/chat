@@ -1,0 +1,49 @@
+<template>
+  <div class="container" id="interact">
+    <Message
+      v-for="message in messagesList"
+      v-bind:key="message"
+      :message="message.text"
+      :nickname="'poejks2903'"
+    />
+  </div>
+</template>
+
+<script>
+import Message from "./Message.vue";
+import store from "../store.js";
+import { computed, watch } from "vue";
+
+export default {
+  name: "MessagesContainer",
+  components: {
+    Message,
+  },
+  setup() {
+    const messagesList = computed(() => store.state.messagesList);
+
+    const scrollToBottom = () => {
+      const messages = document.querySelectorAll(".message");
+      if (messages.length >= 1) {
+        messages[messages.length - 1].scrollIntoView();
+      }
+    };
+    watch(messagesList.value, () => {
+      scrollToBottom();
+    });
+
+    return {
+      messagesList,
+      scrollToBottom,
+    };
+  },
+};
+</script>
+
+<style scoped lang="less">
+.container {
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+</style>
