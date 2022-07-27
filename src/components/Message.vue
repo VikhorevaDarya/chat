@@ -9,7 +9,7 @@
 import store from "../store.js";
 
 export default {
-  name: "Message",
+  name: "MessageComponent",
   props: {
     message: { type: String, default: "" },
     nickname: { type: String, default: "" },

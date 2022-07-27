@@ -1,7 +1,7 @@
 <template>
   <div class="chat">
     <MessagesContainer />
-    <SendMessageForm />
+    <SendMessageForm :channelID="channelID" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import MessagesContainer from "./MessagesContainer.vue";
 import SendMessageForm from "./SendMessageForm.vue";
 
 export default {
-  name: "Chat",
+  name: "ChatComponent",
   props: {
     channelID: { type: Number, default: 0 },
   },
@@ -26,7 +26,6 @@ export default {
 
 .chat {
   max-width: 500px;
-  height: 90vh;
   padding: 10px;
   display: flex;
   flex-direction: column;

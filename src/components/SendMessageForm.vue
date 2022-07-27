@@ -1,7 +1,9 @@
 <template>
   <div class="form">
     <div class="form__textarea-wrapper">
+      <EmojiPicker />
       <textarea
+        ref="textarea"
         class="form__textarea"
         placeholder="Write here"
         @keyup.enter="sendMessage"
@@ -18,24 +20,31 @@
 <script>
 import { ref } from "vue";
 import store from "../store.js";
+import EmojiPicker from "./EmojiPicker.vue";
 
 export default {
   name: "SendMessageForm",
-  setup() {
-    const newMessage = ref("");
-
+  props: {
+    channelID: { type: Number, default: 0 },
+  },
+  components: {
+    EmojiPicker,
+  },
+  setup(props) {
     const setNicknameColor = () => {
       const randomColor = Math.floor(Math.random() * 16777215).toString(16);
       return randomColor;
     };
+
     const color = "#" + setNicknameColor();
+    const newMessage = ref("");
 
     const sendMessage = () => {
       if (!newMessage.value.startsWith("\n")) {
         const messageData = {
           text: newMessage.value,
           sender_id: 1,
-          channel_id: 1,
+          channel_id: props.channelID,
           created_at: new Date(),
           nickname_color: color,
         };
@@ -47,7 +56,6 @@ export default {
         newMessage.value = "";
 
         store.dispatch("sendMessage");
-        console.log(store.state.messagesList);
       }
 
       const textareas = document.querySelectorAll(".form__textarea");
@@ -58,32 +66,15 @@ export default {
     };
 
     const autoResize = () => {
-      const textareas = document.querySelectorAll(".form__textarea"),
-        hiddenDiv = document.createElement("div");
-      let content = null;
-
-      for (let j of textareas) {
-        j.classList.add("txtstuff");
-      }
-      hiddenDiv.classList.add("form__textarea");
-      hiddenDiv.style.display = "none";
-      hiddenDiv.style.whiteSpace = "pre-wrap";
-
-      for (let i of textareas) {
-        (function (i) {
-          i.addEventListener("input", function () {
-            i.parentNode.appendChild(hiddenDiv);
-            content = i.value;
-            content = content.replace(/\n/g, "<br>");
-            hiddenDiv.innerHTML = content + '<br style="line-height: 3px;">';
-            hiddenDiv.style.visibility = "hidden";
-            hiddenDiv.style.display = "block";
-            i.style.height = hiddenDiv.offsetHeight + "px";
-            hiddenDiv.style.visibility = "visible";
-            hiddenDiv.style.display = "none";
-          });
-        })(i);
-      }
+      document.querySelectorAll("textarea").forEach(function (element) {
+        element.style.boxSizing = "border-box";
+        var offset = element.offsetHeight - element.clientHeight;
+        element.addEventListener("input", function (event) {
+          event.target.style.height = "auto";
+          event.target.style.height = event.target.scrollHeight + offset + "px";
+        });
+        element.removeAttribute("data-autoresize");
+      });
     };
     return {
       sendMessage,
@@ -121,6 +112,7 @@ export default {
   &__textarea {
     width: 100%;
     max-width: 500px;
+    box-sizing: border-box;
     min-height: 80px;
     max-height: 150px;
     font-family: Arial, sans-serif;
