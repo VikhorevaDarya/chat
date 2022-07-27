@@ -4,15 +4,14 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      messagesList: [
-        {
-          sender_id: 1,
-          text: "",
-          channel_id: 1,
-          created_at: new Date(),
-        },
-      ],
-      message: "",
+      messagesList: [],
+      messageData: {
+        text: "",
+        sender_id: 1,
+        channel_id: 1,
+        created_at: new Date(),
+        nickname_color: "",
+      },
     };
   },
   getters: {},
@@ -26,12 +25,7 @@ const store = createStore({
   },
   actions: {
     sendMessage(ctx) {
-      ctx.state.messagesList.push({
-        sender_id: 1,
-        text: ctx.state.message,
-        channel_id: 1,
-        created_at: new Date(),
-      });
+      ctx.state.messagesList.push(ctx.state.messageData);
       // axios.post(route("api.messages.sendMessage"), {
       //   dialog_id: ctx.state.currentDialog.id,
       //   text: payload.text,

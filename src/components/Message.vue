@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import store from "../store.js";
+
 export default {
   name: "Message",
   props: {
@@ -13,11 +15,7 @@ export default {
     nickname: { type: String, default: "" },
   },
   setup(props) {
-    const setNicknameColor = () => {
-      const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-      return randomColor;
-    };
-    const color = "#" + setNicknameColor();
+    const color = store.state.messageData.nickname_color;
     const isRenderMessage = props.message !== "\n" && props.message !== "";
     return {
       color,

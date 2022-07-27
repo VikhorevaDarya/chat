@@ -24,8 +24,9 @@ export default {
 
     const scrollToBottom = () => {
       const messages = document.querySelectorAll(".message");
+      const lastMessage = messages.length - 1;
       if (messages.length >= 1) {
-        messages[messages.length - 1].scrollIntoView();
+        messages[lastMessage].scrollIntoView();
       }
     };
     watch(messagesList.value, () => {

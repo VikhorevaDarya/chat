@@ -25,7 +25,7 @@ export default {
 @import "../utils/const.less";
 
 .chat {
-  width: 500px;
+  max-width: 500px;
   height: 90vh;
   padding: 10px;
   display: flex;
