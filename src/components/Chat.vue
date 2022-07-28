@@ -1,7 +1,11 @@
 <template>
   <div class="chat">
     <MessagesContainer />
-    <SendMessageForm :channelID="channelID" />
+    <SendMessageForm
+      :channelID="channelID"
+      @set-emoji="setEmoji"
+      @click="setEmoji"
+    />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <div class="form__textarea-wrapper">
-      <EmojiPicker />
+      <EmojiPicker :setEmoji="setEmoji" />
       <textarea
         ref="textarea"
         class="form__textarea"
@@ -10,6 +10,7 @@
         v-model="newMessage"
         @input="autoResize"
       />
+      <Emoji />
     </div>
     <div class="form__button" @click="sendMessage">
       <div class="form__button">Send</div>
@@ -38,6 +39,12 @@ export default {
 
     const color = "#" + setNicknameColor();
     const newMessage = ref("");
+
+    const setEmoji = (data) => {
+      if (data) {
+        newMessage.value = newMessage.value + data.native;
+      }
+    };
 
     const sendMessage = () => {
       if (!newMessage.value.startsWith("\n")) {
@@ -80,6 +87,7 @@ export default {
       sendMessage,
       newMessage,
       autoResize,
+      setEmoji,
     };
   },
 };

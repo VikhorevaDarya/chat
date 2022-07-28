@@ -34,7 +34,8 @@ export default {
     Smiley,
     Picker,
   },
-  setup() {
+  props: ["setEmoji"],
+  setup(props) {
     const showEmojiPicker = ref(false);
     let emojiIndex = new EmojiIndex(data);
 
@@ -44,17 +45,8 @@ export default {
     };
 
     const addEmoji = (emoji) => {
-      let code = ` :${emoji.id}: `;
-      const textarea = this.$refs.textarea;
-      const cursorPosition = textarea.selectionEnd;
-      const start = this.value.substring(0, textarea.selectionStart);
-      const end = this.value.substring(textarea.selectionStart);
-      const text = start + code + end;
-      this.$emit("input", text);
-      textarea.focus();
-      this.$nextTick(() => {
-        textarea.selectionEnd = cursorPosition + code.length;
-      });
+      props.setEmoji(emoji);
+      console.log(emoji);
     };
     return {
       showEmojiPicker,
@@ -68,10 +60,14 @@ export default {
 
 <style lang="less">
 .emoji-mart {
+  height: 250px;
   position: absolute;
   top: 33px;
   right: 10px;
   z-index: 9999;
+}
+.emoji-mart-bar-preview {
+  display: none;
 }
 .emoji-mart-search {
   display: none;

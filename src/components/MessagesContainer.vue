@@ -30,7 +30,9 @@ export default {
       }
     };
     watch(messagesList.value, () => {
-      scrollToBottom();
+      setTimeout(() => {
+        scrollToBottom();
+      }, 0);
     });
 
     return {
