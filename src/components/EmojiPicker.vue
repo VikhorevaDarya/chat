@@ -41,7 +41,6 @@ export default {
 
     const toggleEmojiPicker = () => {
       showEmojiPicker.value = !showEmojiPicker.value;
-      document.querySelectorAll(".emoji-mart-search").style = "display: none";
     };
 
     const addEmoji = (emoji) => {
@@ -59,6 +58,8 @@ export default {
 </script>
 
 <style lang="less">
+@import "../utils/const.less";
+
 .emoji-mart {
   height: 250px;
   position: absolute;
@@ -77,18 +78,15 @@ export default {
 }
 .emoji-trigger {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   cursor: pointer;
   height: 20px;
 }
 .emoji-trigger path {
   transition: 0.1s all;
 }
-.emoji-trigger:hover path {
-  fill: #000000;
-}
 .emoji-trigger.triggered path {
-  fill: darken(#fec84a, 15%);
+  fill: @primary-blue;
 }
 </style>

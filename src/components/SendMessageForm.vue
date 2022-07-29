@@ -1,7 +1,6 @@
 <template>
   <div class="form">
     <div class="form__textarea-wrapper">
-      <EmojiPicker :setEmoji="setEmoji" />
       <textarea
         ref="textarea"
         class="form__textarea"
@@ -10,7 +9,7 @@
         v-model="newMessage"
         @input="autoResize"
       />
-      <Emoji />
+      <EmojiPicker :setEmoji="setEmoji" />
     </div>
     <div class="form__button" @click="sendMessage">
       <div class="form__button">Send</div>
@@ -109,13 +108,12 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: @coupons-shadow-backround;
+    background-color: @primary-blue;
     color: @utility-white;
     cursor: pointer;
   }
   &__textarea-wrapper {
     width: 100%;
-    padding: 0 6px 0 18px;
   }
   &__textarea {
     width: 100%;
@@ -133,7 +131,8 @@ export default {
     overflow: scroll;
     margin-bottom: 10px;
     &:focus {
-      border: 1px solid blue;
+      border: 1px solid @primary-blue;
+      box-shadow: @dark-box-shadow;
     }
   }
 }
