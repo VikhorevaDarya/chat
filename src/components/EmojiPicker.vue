@@ -45,7 +45,6 @@ export default {
 
     const addEmoji = (emoji) => {
       props.setEmoji(emoji);
-      console.log(emoji);
     };
     return {
       showEmojiPicker,

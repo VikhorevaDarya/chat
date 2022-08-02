@@ -19,6 +19,7 @@ export default {
   name: "ChatComponent",
   props: {
     channelID: { type: Number, default: 0 },
+    token: { type: Number, default: 0 },
   },
   components: {
     MessagesContainer,

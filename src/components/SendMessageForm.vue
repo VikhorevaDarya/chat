@@ -24,7 +24,6 @@
 <script>
 import { ref } from "vue";
 import EmojiPicker from "./EmojiPicker.vue";
-import store from "../store.js";
 
 export default {
   name: "SendMessageForm",
@@ -37,7 +36,6 @@ export default {
   setup(props) {
     const newMessage = ref("");
     const isFocus = ref(false);
-    console.log(store.state.messagesList);
 
     const setEmoji = (data) => {
       if (data) {
@@ -54,6 +52,9 @@ export default {
       fetch(`${url}`, {
         method: "post",
         body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
     };
 
