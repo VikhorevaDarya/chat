@@ -38,9 +38,9 @@ export default {
     });
 
     const channel = pusher.subscribe("chat." + props.channelID);
-    channel.bind("new-message", function (data) {
-      store.commit("set", {
-        messageData: data,
+    channel.bind("new-message", async function (data) {
+      await store.commit("set", {
+        messagesList: [...store.state.messagesList, data],
       });
     });
   },

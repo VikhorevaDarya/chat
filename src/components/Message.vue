@@ -6,19 +6,16 @@
 </template>
 
 <script>
-import store from "../store.js";
-
 export default {
   name: "MessageComponent",
   props: {
     message: { type: String, default: "" },
     nickname: { type: String, default: "" },
+    color: { type: String, default: "" },
   },
   setup(props) {
-    const color = store.state.messageData.user_data.color;
     const isRenderMessage = props.message !== "\n" && props.message !== "";
     return {
-      color,
       isRenderMessage,
     };
   },

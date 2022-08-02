@@ -5,6 +5,7 @@
       v-bind:key="message"
       :message="message.message"
       :nickname="message.user_data.name"
+      :color="message.user_data.color"
     />
   </div>
 </template>

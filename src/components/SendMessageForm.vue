@@ -23,8 +23,8 @@
 
 <script>
 import { ref } from "vue";
-import store from "../store.js";
 import EmojiPicker from "./EmojiPicker.vue";
+import store from "../store.js";
 
 export default {
   name: "SendMessageForm",
@@ -37,6 +37,7 @@ export default {
   setup(props) {
     const newMessage = ref("");
     const isFocus = ref(false);
+    console.log(store.state.messagesList);
 
     const setEmoji = (data) => {
       if (data) {
@@ -50,8 +51,6 @@ export default {
         text: newMessage.value,
         channel_id: props.channelID,
       };
-      console.log("fetch function" + newMessage.value);
-      console.log(store.state.messageData);
       fetch(`${url}`, {
         method: "post",
         body: JSON.stringify(data),
@@ -59,10 +58,10 @@ export default {
     };
 
     const sendMessage = () => {
-      if (!newMessage.value.startsWith("\n")) {
+      const isSendMessage =
+        !newMessage.value.startsWith("\n") && newMessage.value !== "";
+      if (isSendMessage) {
         fetchToSendMessage();
-        store.dispatch("sendMessage");
-        console.log(store.state.messagesList);
       }
       newMessage.value = "";
 
