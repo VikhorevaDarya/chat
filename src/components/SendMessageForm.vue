@@ -1,13 +1,17 @@
 <template>
   <div class="form">
-    <div class="form__textarea-wrapper">
+    <div
+      class="form__textarea-wrapper"
+      :class="{ 'form__textarea-wrapper_focus': isFocus }"
+    >
       <textarea
-        ref="textarea"
         class="form__textarea"
         placeholder="Write here"
         @keyup.enter="sendMessage"
         v-model="newMessage"
-        @input="autoResize"
+        @input="textareaAutoResize"
+        @focus="isFocus = true"
+        @blur="isFocus = false"
       />
       <EmojiPicker :setEmoji="setEmoji" />
     </div>
@@ -31,13 +35,8 @@ export default {
     EmojiPicker,
   },
   setup(props) {
-    const setNicknameColor = () => {
-      const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-      return randomColor;
-    };
-
-    const color = "#" + setNicknameColor();
     const newMessage = ref("");
+    const isFocus = ref(false);
 
     const setEmoji = (data) => {
       if (data) {
@@ -45,36 +44,38 @@ export default {
       }
     };
 
+    const fetchToSendMessage = () => {
+      const url = "https://wedev.upstream.team/api/chat/v1/send-message";
+      const data = {
+        text: newMessage.value,
+        channel_id: props.channelID,
+      };
+      console.log("fetch function" + newMessage.value);
+      console.log(store.state.messageData);
+      fetch(`${url}`, {
+        method: "post",
+        body: JSON.stringify(data),
+      });
+    };
+
     const sendMessage = () => {
       if (!newMessage.value.startsWith("\n")) {
-        const messageData = {
-          text: newMessage.value,
-          sender_id: 1,
-          channel_id: props.channelID,
-          created_at: new Date(),
-          nickname_color: color,
-        };
-
-        store.commit("set", {
-          messageData,
-        });
-
-        newMessage.value = "";
-
+        fetchToSendMessage();
         store.dispatch("sendMessage");
+        console.log(store.state.messagesList);
       }
+      newMessage.value = "";
 
       const textareas = document.querySelectorAll(".form__textarea");
-
       for (let i of textareas) {
-        i.style.height = "80px";
+        i.style.height = "55px";
       }
     };
 
-    const autoResize = () => {
-      document.querySelectorAll("textarea").forEach(function (element) {
+    const autoResize = (e) => {
+      e.forEach(function (element) {
         element.style.boxSizing = "border-box";
-        var offset = element.offsetHeight - element.clientHeight;
+        const offset = element.offsetHeight - element.clientHeight;
         element.addEventListener("input", function (event) {
           event.target.style.height = "auto";
           event.target.style.height = event.target.scrollHeight + offset + "px";
@@ -82,11 +83,22 @@ export default {
         element.removeAttribute("data-autoresize");
       });
     };
+
+    const textareaAutoResize = () => {
+      const textarea = document.querySelectorAll("textarea");
+      const textareaWrapper = document.querySelectorAll(
+        "form__textarea-wrapper"
+      );
+      autoResize(textarea);
+      autoResize(textareaWrapper);
+    };
+
     return {
       sendMessage,
       newMessage,
-      autoResize,
+      textareaAutoResize,
       setEmoji,
+      isFocus,
     };
   },
 };
@@ -114,12 +126,21 @@ export default {
   }
   &__textarea-wrapper {
     width: 100%;
+    display: flex;
+    background-color: @utility-white;
+    min-height: 55px;
+    max-height: 150px;
+    margin-bottom: 10px;
+    &_focus {
+      border: 1px solid @primary-blue;
+      box-shadow: @dark-box-shadow;
+    }
   }
   &__textarea {
     width: 100%;
     max-width: 500px;
     box-sizing: border-box;
-    min-height: 80px;
+    min-height: 55px;
     max-height: 150px;
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -128,12 +149,9 @@ export default {
     padding: 5px;
     border: none;
     outline: none;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     margin-bottom: 10px;
-    &:focus {
-      border: 1px solid @primary-blue;
-      box-shadow: @dark-box-shadow;
-    }
   }
 }
 </style>

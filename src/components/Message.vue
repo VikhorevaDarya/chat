@@ -15,7 +15,7 @@ export default {
     nickname: { type: String, default: "" },
   },
   setup(props) {
-    const color = store.state.messageData.nickname_color;
+    const color = store.state.messageData.user_data.color;
     const isRenderMessage = props.message !== "\n" && props.message !== "";
     return {
       color,

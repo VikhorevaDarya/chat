@@ -3,8 +3,8 @@
     <Message
       v-for="message in messagesList"
       v-bind:key="message"
-      :message="message.text"
-      :nickname="'poejks2903'"
+      :message="message.message"
+      :nickname="message.user_data.name"
     />
   </div>
 </template>
