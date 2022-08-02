@@ -26,6 +26,14 @@ export default {
     SendMessageForm,
   },
   setup(props) {
+    const scrollToBottom = () => {
+      const messages = document.querySelectorAll(".message");
+      const lastMessage = messages.length - 1;
+      if (messages.length >= 1) {
+        messages[lastMessage].scrollIntoView();
+      }
+    };
+
     Pusher.logToConsole = true;
 
     const pusher = new Pusher("app-key", {
@@ -43,6 +51,7 @@ export default {
       await store.commit("set", {
         messagesList: [...store.state.messagesList, data],
       });
+      scrollToBottom();
     });
   },
 };
@@ -53,6 +62,7 @@ export default {
 
 .chat {
   max-width: 500px;
+  height: 200px;
   padding: 10px;
   display: flex;
   flex-direction: column;

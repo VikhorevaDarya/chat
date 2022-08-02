@@ -13,7 +13,7 @@
 <script>
 import Message from "./Message.vue";
 import store from "../store.js";
-import { computed, watch } from "vue";
+import { computed } from "vue";
 
 export default {
   name: "MessagesContainer",
@@ -22,23 +22,8 @@ export default {
   },
   setup() {
     const messagesList = computed(() => store.state.messagesList);
-
-    const scrollToBottom = () => {
-      const messages = document.querySelectorAll(".message");
-      const lastMessage = messages.length - 1;
-      if (messages.length >= 1) {
-        messages[lastMessage].scrollIntoView();
-      }
-    };
-    watch(messagesList.value, () => {
-      setTimeout(() => {
-        scrollToBottom();
-      }, 0);
-    });
-
     return {
       messagesList,
-      scrollToBottom,
     };
   },
 };
